@@ -1,20 +1,20 @@
 # CodePath AI201
 
-CodePath AI201 코스의 주차별 랩 모음입니다.
+A collection of my weekly labs from the CodePath AI201 course.
 
 ## Labs
 
 | Week | Lab | Description |
 |------|-----|-------------|
-| 2 | [PlantAdvisor](./lab2-plantadvisor) | Groq + Gradio 기반 AI 식물 관리 어시스턴트 에이전트 |
+| 2 | [PlantAdvisor](./lab2-plantadvisor) | AI plant-care assistant agent built with Groq + Gradio |
 
-## 실행 방법 (각 랩 공통)
+## How to run (same for every lab)
 
 ```bash
 cd labN-name
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # 그 후 .env 에 본인 API 키 입력
+cp .env.example .env   # then add your own API key to .env
 python app.py
 ```
