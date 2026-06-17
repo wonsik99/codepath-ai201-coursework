@@ -8,7 +8,7 @@ as `interview`, `solo`, `panel`, or `narrative` using labeled examples and an LL
 ```bash
 pip install -r requirements.txt
 cp .env.example .env
-# Add your GROQ_API_KEY to .env
+# Set LLM_PROVIDER to groq or openai, then add the matching API key(s)
 ```
 
 ## Run

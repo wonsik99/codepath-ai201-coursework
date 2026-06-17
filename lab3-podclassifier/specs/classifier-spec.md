@@ -91,10 +91,19 @@ the format below:" followed by the output format you chose.
 **What output format should you request from the LLM?**
 
 ```
-[blank — you need to parse the response in classify_episode(). What format
-makes parsing reliable? Think about: a single label on its own line?
-A structured format like "Label: X / Reasoning: Y"? JSON?
-What are the tradeoffs?]
+Use a fixed two-line text format (not JSON):
+
+Label: <one of interview, solo, panel, narrative>
+Reasoning: <1-2 sentences explaining the choice>
+
+Tradeoffs:
+- "Label: X / Reasoning: Y" is easy to parse with simple string splits and
+  handles capitalization or markdown (**interview**) with strip/lower cleanup.
+- JSON looks structured but often breaks on quotes, newlines, or trailing commas.
+- A label-only line is simplest to parse but gives no reasoning for the UI.
+
+The prompt will end with: "Return your answer in exactly this format:" followed
+by the two lines above as a template.
 ```
 
 ---
@@ -102,8 +111,14 @@ What are the tradeoffs?]
 **Edge cases to handle in the prompt:**
 
 ```
-[blank — what if labeled_examples is empty? What if the description is very
-short? How does your prompt handle these?]
+- labeled_examples is empty: still include the task instruction and taxonomy,
+  but add a note like "No training examples are available — classify using the
+  label definitions only." Skip the examples block entirely.
+- description is very short: include it as-is under Description: and add
+  "Classify based on whatever text is available."
+- New episode has no title (classify_episode only receives description): use
+  Description: {description} and Label: ? without a Title line, or use
+  Title: (not provided).
 ```
 
 ---
@@ -145,9 +160,9 @@ exactly as received — no modification needed before calling.
 
 ```
 Call _client.chat.completions.create() with:
-  - model: the model name from config (MODEL_NAME)
+  - model: LLM_MODEL from config.py ("llama-3.3-70b-versatile")
   - messages: a list with one dict — {"role": "user", "content": prompt}
-  - max_tokens: a reasonable limit (e.g., 200–300) to keep responses concise
+  - max_tokens: 250 to keep responses concise
 
 Extract the response text from:
   response.choices[0].message.content
@@ -158,9 +173,17 @@ Extract the response text from:
 **Step 3 — Parse the response:**
 
 ```
-[blank — how do you extract the label and reasoning from the LLM's text output?
-What string operations or parsing logic do you need?
-This depends on the output format you chose in build_few_shot_prompt.]
+1. response_text = content.strip() if content else ""
+2. Initialize label = "unknown" and reasoning = response_text (fallback).
+3. Loop over response_text.splitlines():
+   - If line.lower().startswith("label:"):
+     raw = line.split(":", 1)[1].strip().lower()
+     raw = raw.strip("*\"'.")   # handle **interview** or "interview".
+     label = raw
+   - If line.lower().startswith("reasoning:"):
+     reasoning = line.split(":", 1)[1].strip()
+4. If no Label: line was found, keep label as "unknown" and put the full
+   response in reasoning so debugging is possible.
 ```
 
 ---
@@ -168,8 +191,9 @@ This depends on the output format you chose in build_few_shot_prompt.]
 **Step 4 — Validate the label:**
 
 ```
-[blank — what do you do if the LLM returns a label that isn't in VALID_LABELS?
-What should label be set to?]
+After parsing, check: if label not in VALID_LABELS, set label = "unknown".
+Keep the reasoning text as-is so the UI still shows why the model answered
+that way. VALID_LABELS = ["interview", "solo", "panel", "narrative"].
 ```
 
 ---
@@ -177,9 +201,18 @@ What should label be set to?]
 **Step 5 — Handle errors gracefully:**
 
 ```
-[blank — what could go wrong? (Network error? Unparseable response?)
-What should the function return if something fails?
-Hint: the evaluation loop runs 20 calls — one bad response shouldn't crash everything.]
+Wrap the API call and parsing in try/except.
+
+What can go wrong:
+- Groq API error (network, rate limit, invalid key) → return
+  {"label": "unknown", "reasoning": "API error: <message>"}
+- Empty or null response content → return
+  {"label": "unknown", "reasoning": "Empty response from LLM"}
+- Unparseable format (no Label: line, or garbage text) → label stays
+  "unknown"; reasoning contains the raw response for debugging
+
+Never raise an exception to the caller — Milestone 3 calls this 20 times in
+a loop and one failure must not crash the whole evaluation run.
 ```
 
 ---
@@ -212,24 +245,31 @@ any labels you're unsure about. Annotation quality is part of the lab.
 **Test: what does the raw LLM response look like for one episode?**
 
 ```
-Episode tested: [title]
-Raw response text: [paste it here]
+Episode tested: The Case for Four-Day Workweeks
+Raw response text:
+Label: solo
+Reasoning: The episode features a single host sharing their thoughts and opinions on a topic, with no mention of guests or external sources being assembled into a narrative.
 ```
 
 **How did you parse the label out of the response?**
 
 ```
-[describe the string operations — strip, split, lower, etc.]
+Loop over splitlines(). For lines starting with "label:" (case-insensitive),
+take text after the first colon, strip whitespace, lower(), then strip markdown
+quotes and asterisks with strip("*\"'.") . Compare result to VALID_LABELS.
+Lines starting with "reasoning:" populate the reasoning field the same way.
 ```
 
 **Did any episodes return `"unknown"`? If so, why?**
 
 ```
-[yes / no — if yes, what did the raw response look like?]
+No on the four UI smoke tests (solo, interview, narrative, panel). Unit tests
+still return "unknown" for invalid label strings and empty responses as expected.
 ```
 
 **One thing about the output format that surprised you:**
 
 ```
-[your answer here]
+The model followed the Label:/Reasoning: format reliably on the first try.
+The parser still handles markdown variants like "Label: **solo**" via strip("*\"'.").
 ```
