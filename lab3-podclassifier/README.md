@@ -3,6 +3,33 @@
 A few-shot podcast episode classifier. Given an episode description, classifies it
 as `interview`, `solo`, `panel`, or `narrative` using labeled examples and an LLM.
 
+## What I Built
+
+All three milestones are complete:
+
+### Milestone 1 — Labeled training set (`data/my_labels.json`)
+Hand-labeled all 20 training episodes across the four formats
+(interview 5 · solo 6 · panel 5 · narrative 4) to serve as the few-shot examples.
+
+### Milestone 2 — Few-shot classifier (`classifier.py`)
+- `load_labeled_examples()` — merges the training episodes with my labels and keeps
+  only the ones with a valid, non-null label.
+- `build_few_shot_prompt()` — assembles a prompt with the label definitions plus my
+  labeled examples, and asks for a `Label:` / `Reasoning:` response.
+- `_parse_classification_response()` — robustly extracts the label (strips quotes,
+  asterisks, and punctuation, case-insensitive) and falls back to `unknown` for
+  anything outside the four valid labels.
+- `classify_episode()` — runs the LLM call and wraps API errors so a failure returns
+  `unknown` instead of crashing the app.
+
+### Milestone 3 — Evaluation metrics (`evaluate.py`)
+- `compute_accuracy()` — overall exact-match accuracy over the held-out test set.
+- `compute_per_class_accuracy()` — accuracy broken down per label (correct/total),
+  which surfaces which formats the classifier struggles with.
+
+The classifier also works with either **Groq** or **OpenAI** as the LLM backend,
+selected via `LLM_PROVIDER` in the config.
+
 ## Setup
 
 ```bash
@@ -19,11 +46,11 @@ python app.py
 
 ## Lab milestones
 
-| Milestone | Task | File |
-|---|---|---|
-| 1 | Label 20 training episodes | `data/my_labels.json` |
-| 2 | Implement the few-shot classifier | `classifier.py` |
-| 3 | Implement evaluation metrics | `evaluate.py` |
+| Milestone | Task                              | File                  |
+| --------- | --------------------------------- | --------------------- |
+| 1         | Label 20 training episodes        | `data/my_labels.json` |
+| 2         | Implement the few-shot classifier | `classifier.py`       |
+| 3         | Implement evaluation metrics      | `evaluate.py`         |
 
 See the lab instructions for full details.
 
