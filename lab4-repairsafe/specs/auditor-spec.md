@@ -1,7 +1,7 @@
 # Spec: `log_interaction()`
 
 **File:** `auditor.py`
-**Status:** Spec incomplete — fill in all blank fields before implementing
+**Status:** Spec complete — ready to implement
 
 ---
 
@@ -43,8 +43,9 @@ Record every interaction — question, safety tier, and response preview — to 
 | `"tier"` | `str` | Safety tier assigned to this question |
 | `"question"` | `str` | The user's question, truncated to 300 characters |
 | `"response_preview"` | `str` | First 200 characters of the generated response |
-| `[your field]` | `[type]` | [description] |
-| `[your field]` | `[type]` | [description] |
+| `"question_length"` | `int` | Full question length before truncation — tells you if context was cut off |
+| `"response_length"` | `int` | Full response length — spot unusually short refuse replies or empty-ish outputs |
+| `"question_truncated"` | `bool` | Whether the question hit the 300-char limit — long pasted questions may lose detail |
 
 ---
 
@@ -53,7 +54,14 @@ Record every interaction — question, safety tier, and response preview — to 
 *The required fields truncate the question to 300 characters and the response to 200. Write down the reasoning for each — what would you lose by truncating more aggressively, and what's the risk of logging the full text at production scale?*
 
 ```
-[your answer here]
+Question (300 chars): enough to identify and group similar questions without storing huge
+paste-ins. Shorter would lose the distinguishing detail on boundary cases (e.g. "replace"
+vs "add new outlet" might both look the same if cut too early).
+
+Response preview (200 chars): enough to see whether refuse answers accidentally contain
+step-like language without logging full multi-paragraph DIY guides. Logging full responses
+at 10k/day gets expensive, noisy, and raises privacy/storage concerns if users paste
+addresses or personal details.
 ```
 
 ---
@@ -63,7 +71,10 @@ Record every interaction — question, safety tier, and response preview — to 
 *What happens if `logs/` doesn't exist when the function runs for the first time? How will you handle that — and why is this worth thinking about at all?*
 
 ```
-[your answer here]
+Call os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True) before opening the file.
+Fresh clones might only have logs/.gitkeep until the first write — code shouldn't assume
+the folder already exists on disk. Same pattern you'd use in production when the log
+path is configured but not pre-created on deploy.
 ```
 
 ---
@@ -73,8 +84,10 @@ Record every interaction — question, safety tier, and response preview — to 
 *Write an example of what you want the one-line terminal summary to look like after a question is logged. Be specific about format.*
 
 ```
-[your example output here]
+[LOGGED] tier=caution | "How do I replace a bathroom faucet?" → 842 chars
 ```
+
+Format: `[LOGGED] tier=<tier> | "<question preview up to ~60 chars>" → <full response length> chars`
 
 ---
 
@@ -85,11 +98,14 @@ Record every interaction — question, safety tier, and response preview — to 
 **The actual log file content after 3 test queries (paste the three JSON lines):**
 
 ```
-[your answer here]
+{"timestamp": "2026-06-24T01:31:46.447048Z", "tier": "safe", "question": "How do I patch a small hole in drywall?", "response_preview": "Patching a small hole in drywall is a straightforward DIY task that you can complete with a few basic tools and materials. Here's a step-by-step guide to help you get the job done:\n\n**Tools and Materi", "question_length": 39, "response_length": 2852, "question_truncated": false}
+{"timestamp": "2026-06-24T01:31:48.328886Z", "tier": "caution", "question": "How do I replace a bathroom faucet?", "response_preview": "Replacing a bathroom faucet can be a bit challenging, and if not done correctly, it can lead to water leaks, damage to surrounding surfaces, or even electrical shock if the faucet has a built-in light", "question_length": 35, "response_length": 2958, "question_truncated": false}
+{"timestamp": "2026-06-24T01:31:49.187248Z", "tier": "refuse", "question": "How do I fix a gas line that smells like it's leaking?", "response_preview": "A gas line leak is a serious safety hazard that can lead to a gas explosion, fire, or even death. Due to the extreme risks involved, it's not a repair that should be attempted by a DIY enthusiast.\n\nIf", "question_length": 54, "response_length": 745, "question_truncated": false}
 ```
 
 **One field you'd add to the log if this were a real production system handling 10,000 questions per day:**
 
 ```
-[your answer here]
+classifier_reason — the short reason string from Milestone 1. Makes it way easier to
+filter and spot patterns when tier looks wrong but you don't want to re-run every question.
 ```
