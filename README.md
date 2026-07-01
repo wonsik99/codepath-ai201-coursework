@@ -10,7 +10,7 @@ A collection of my weekly labs from the CodePath AI201 course.
 | 2 | [PlantAdvisor](./lab2-plantadvisor) | AI plant-care assistant agent built with Groq + Gradio | ✅ Done |
 | 3 | [PodClassifier](./lab3-podclassifier) | Few-shot podcast episode classifier (interview/solo/panel/narrative) | ✅ Done |
 | 4 | [RepairSafe](./lab4-repairsafe) | Home repair Q&A with safety tier classification (safe/caution/refuse) | ✅ Done |
-| 5 | [BookClub](./lab5-bookclub) | Flask reading-list app with books, progress tracking, and stats | ⏳ Starter (to do) |
+| 5 | [BookClub](./lab5-bookclub) | Flask reading-list app with books, progress tracking, and stats | ✅ Done |
 
 ## How to run (same for every lab)
 

@@ -2,11 +2,15 @@
 
 A small reading list app where club members track books, log their progress, and see their reading stats.
 
-## What the app does
+## What I Built
 
-- **Book list** — members add books to a shared reading list
-- **Reading tracker** — mark books as started or finished
-- **Stats** — reading streak, books finished this month, total pages read
+Fixed two bugs where `started_at` was used instead of `finished_at`:
+
+### Bug 1 — Reading streak (`services/stats_service.py`)
+`calculate_streak()` now counts consecutive days using **finish dates**, not start dates. Streak went from 0 to the correct value for alex.
+
+### Bug 2 — History order (`services/reading_service.py`)
+`get_reading_history()` now sorts by **`finished_at` descending** so the most recently finished book appears first.
 
 ## Setup
 
