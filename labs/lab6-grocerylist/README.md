@@ -1,6 +1,13 @@
-# GroceryList — AI201 Lab 6 Starter
+# GroceryList - AI201 Lab 6
 
 A shared grocery list API where members create lists, add items, and track what's been purchased.
+
+## What I Completed
+
+Reviewed two simulated backend pull requests: a bulk-purchase endpoint and a
+list-statistics endpoint. The completed [`review_template.md`](review_template.md)
+documents data-integrity, validation, response-semantics, and missing-resource
+issues, along with review verdicts and a final reflection.
 
 ## What the app does
 

@@ -1,27 +1,33 @@
-# CodePath AI201
+# CodePath AI201 Weekly Labs
 
-A collection of my weekly labs from the CodePath AI201 course.
-
-## Labs
+The six weekly labs from the CodePath AI201 course, completed during Summer
+2026.
 
 | Week | Lab | Description | Status |
-|------|-----|-------------|--------|
-| 1 | [RulesBot](./lab1-rulesbot) | Board-game rules assistant using a RAG pipeline | ⏳ Starter (to do) |
-| 2 | [PlantAdvisor](./lab2-plantadvisor) | AI plant-care assistant agent built with Groq + Gradio | ✅ Done |
-| 3 | [PodClassifier](./lab3-podclassifier) | Few-shot podcast episode classifier (interview/solo/panel/narrative) | ✅ Done |
-| 4 | [RepairSafe](./lab4-repairsafe) | Home repair Q&A with safety tier classification (safe/caution/refuse) | ✅ Done |
-| 5 | [BookClub](./lab5-bookclub) | Flask reading-list app with books, progress tracking, and stats | ✅ Done |
-| 6 | [GroceryList](./lab6-grocerylist) | Shared grocery list API with PR code review lab | ⏳ Starter (to do) |
+|---|---|---|---|
+| 1 | [RulesBot](./lab1-rulesbot) | Board-game rules assistant using a RAG pipeline | Incomplete |
+| 2 | [PlantAdvisor](./lab2-plantadvisor) | AI plant-care assistant agent built with Groq and Gradio | Complete |
+| 3 | [PodClassifier](./lab3-podclassifier) | Few-shot podcast episode classifier | Complete |
+| 4 | [RepairSafe](./lab4-repairsafe) | Home-repair Q&A with safety-tier classification | Complete |
+| 5 | [BookClub](./lab5-bookclub) | Flask reading-list bug hunt | Complete |
+| 6 | [GroceryList](./lab6-grocerylist) | Simulated backend pull-request review | Complete |
 
-## How to run (same for every lab)
+Lab 1 is retained as unfinished coursework. Its retrieval and generation
+milestones were not completed. Labs 2-6 contain the submitted implementation or
+review work.
 
-Most labs (1–4) use Gradio + an LLM API key. Labs 5–6 are Flask APIs — see each lab's README for `seed_data.py` and port 5000.
+## Running a Lab
+
+Use the lab-specific README first. A typical Python lab starts with:
 
 ```bash
-cd labN-name
+cd labs/lab2-plantadvisor
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # then add your own API key to .env
+cp .env.example .env
 python app.py
 ```
+
+Labs 5 and 6 are Flask APIs and require `python seed_data.py` before starting
+the server.

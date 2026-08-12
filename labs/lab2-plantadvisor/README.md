@@ -58,7 +58,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Plant Advisor will open in your browser. The chat interface works, but the agent returns a placeholder message until you complete Milestone 2.
+Plant Advisor will open in your browser with the completed tool-calling agent.
 
 ---
 

@@ -22,7 +22,7 @@ Detailed design notes and annotation rules live in [`planning.md`](planning.md).
 The labeled dataset lives at:
 
 ```text
-project3/data/takemeter_dataset.csv
+projects/project3/data/takemeter_dataset.csv
 ```
 
 | Column | Meaning |
@@ -240,7 +240,7 @@ The gap between my taxonomy and the model's behavior suggests the labels are con
 
 ## AI Usage
 
-1. **Project setup and taxonomy drafting:** I asked Codex to scaffold the `project3` folder, draft the initial `r/soccer` label definitions, and configure the Colab notebook paths. I revised several definitions in `planning.md` after stress-testing edge cases manually.
+1. **Project setup and taxonomy drafting:** I asked Codex to scaffold the project folder, draft the initial `r/soccer` label definitions, and configure the Colab notebook paths. I revised several definitions in `planning.md` after stress-testing edge cases manually.
 
 2. **Failure-pattern review:** I pasted misclassified test examples into an LLM and asked for recurring themes. I accepted patterns about meme templates and short-post ambiguity, but rejected the suggestion that most errors were simply "labeling inconsistency" because manual review showed consistent rules applied to genuinely ambiguous comments.
 
