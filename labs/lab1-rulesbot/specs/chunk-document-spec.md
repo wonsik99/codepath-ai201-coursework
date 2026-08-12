@@ -116,11 +116,14 @@ handle these cases better, at the cost of more implementation complexity.
 **Actual chunk count produced across all 8 rule books:**
 
 ```
-[your answer here]
+149 chunks. By game: Catan 18, Clue 21, Codenames 16, Monopoly 23,
+Pandemic 18, Risk 20, Ticket To Ride 16, and Uno 17.
 ```
 
 **One thing that surprised you or didn't match your expectations:**
 
 ```
-[your answer here]
+The final short window is discarded when it is under 50 characters, so the
+number of stored chunks is not simply each document length divided by 250.
+The overlap also means chunk counts grow faster than a non-overlapping split.
 ```

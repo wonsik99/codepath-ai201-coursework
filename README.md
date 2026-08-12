@@ -9,15 +9,15 @@ open-source contribution from the CodePath AI201 course.
 
 | Week | Lab | Focus | Status |
 |---|---|---|---|
-| 1 | [RulesBot](./labs/lab1-rulesbot) | Board-game rules assistant using a RAG pipeline | Incomplete |
+| 1 | [RulesBot](./labs/lab1-rulesbot) | Board-game rules assistant using a RAG pipeline | Complete |
 | 2 | [PlantAdvisor](./labs/lab2-plantadvisor) | Tool-using plant-care agent built with Groq and Gradio | Complete |
 | 3 | [PodClassifier](./labs/lab3-podclassifier) | Few-shot podcast episode classifier with evaluation metrics | Complete |
 | 4 | [RepairSafe](./labs/lab4-repairsafe) | Safety-tiered home-repair assistant with audit logging | Complete |
 | 5 | [BookClub](./labs/lab5-bookclub) | Flask bug hunt covering reading streaks and history ordering | Complete |
 | 6 | [GroceryList](./labs/lab6-grocerylist) | Code review of two simulated backend pull requests | Complete |
 
-Lab 1 remains an intentionally honest record of unfinished coursework: document
-chunking is present, but retrieval and response generation are still stubs.
+Lab 1 was completed after the course: semantic retrieval, relevance filtering,
+grounded response generation, specs, and automated tests are now included.
 
 ## Standalone Projects
 

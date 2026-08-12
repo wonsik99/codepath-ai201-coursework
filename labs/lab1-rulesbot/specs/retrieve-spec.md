@@ -1,7 +1,7 @@
 # Spec: `retrieve()`
 
 **File:** `retriever.py`
-**Status:** Spec incomplete — fill in all blank fields before implementing
+**Status:** Complete
 
 ---
 
@@ -44,9 +44,11 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 
 *Describe how you will use `_collection.query()` to find relevant chunks. What arguments will you pass, and why?*
 
-```
-[your answer here]
-```
+`_collection.query()` receives the stripped question in a one-item
+`query_texts` list, the smaller of `n_results` and the collection size, and
+`["documents", "metadatas", "distances"]` in `include`. Requesting these three
+fields provides the rule text, its game label, and its ranking score without
+fetching unused embeddings.
 
 ---
 
@@ -54,9 +56,16 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 
 *Sketch out what one item in your return list looks like as a concrete example. Where does each field come from in the query results?*
 
+```python
+{
+    "text": "When a 7 is rolled, no resources are produced...",
+    "game": "Catan",
+    "distance": 0.4664,
+}
 ```
-[your answer here]
-```
+
+`text` comes from `documents`, `game` from the corresponding metadata dict,
+and `distance` from the corresponding cosine-distance result.
 
 ---
 
@@ -64,9 +73,9 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 
 *`_collection.query()` returns nested lists. Describe what index you need to access to get the actual list of results for a single query, and why the nesting exists.*
 
-```
-[your answer here]
-```
+ChromaDB accepts a batch of queries, so every returned field has one outer
+list per query. RulesBot sends exactly one query and reads index `[0]` from
+`documents`, `metadatas`, and `distances` before zipping the inner lists.
 
 ---
 
@@ -74,9 +83,11 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 
 *Will you filter out results above a certain distance score, or return all `n_results` regardless of how relevant they are? What are the tradeoffs of each approach?*
 
-```
-[your answer here]
-```
+`retrieve()` returns all requested matches and leaves thresholding to the
+generator. This keeps retrieval reusable for debugging and makes its output
+contract predictable. `generate_response()` excludes distances above `0.55`,
+which prevents weak context from reaching the LLM while retaining the observed
+relevant Monopoly result at `0.5072`.
 
 ---
 
@@ -84,9 +95,11 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 
 *How does your implementation behave when: (a) the collection is empty, (b) the query matches no chunks well, (c) the query matches chunks from multiple games?*
 
-```
-[your answer here]
-```
+An empty collection, blank query, or non-positive result count returns `[]`
+without running an embedding query. Weak matches are returned with their
+distances so the generator can reject them. Matches from multiple games remain
+ranked together; the generator labels each context section with its game so an
+ambiguous question can be answered with explicit sources or declined.
 
 ---
 
@@ -97,14 +110,14 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 **Test query and top result returned:**
 
 ```
-Query: [your test query]
-Top result game: [game name]
-Distance score: [score]
-Does it make sense? [yes / no / explain]
+Query: What happens when you roll a 7?
+Top result game: Catan
+Distance score: 0.4664
+Does it make sense? Yes. The chunk begins with Catan's ROLLING A 7 rule.
 ```
 
 **One thing about the query results that surprised you:**
 
-```
-[your answer here]
-```
+The broad query "How do you win?" returned valid winning-condition chunks from
+several games with very similar scores. Adding the game name is important when
+the same intent exists in every rule book.

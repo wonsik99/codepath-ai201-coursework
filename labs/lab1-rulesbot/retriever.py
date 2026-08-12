@@ -1,23 +1,28 @@
 import chromadb
 from chromadb.utils import embedding_functions
+
 from config import CHROMA_COLLECTION, CHROMA_PATH, EMBEDDING_MODEL, N_RESULTS
 
-# Embedding function and ChromaDB client are initialized once at module load.
-# sentence-transformers downloads the model on first use — this may take
-# 30–60 seconds the very first time. Subsequent runs use a local cache.
-_ef = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name=EMBEDDING_MODEL
-)
-_client = chromadb.PersistentClient(path=CHROMA_PATH)
-_collection = _client.get_or_create_collection(
-    name=CHROMA_COLLECTION,
-    embedding_function=_ef,
-    metadata={"hnsw:space": "cosine"},
-)
+_ef = None
+_client = None
+_collection = None
 
 
 def get_collection():
-    """Return the ChromaDB collection. Used by app.py during ingestion."""
+    """Create the embedding-backed ChromaDB collection on first use."""
+    global _ef, _client, _collection
+
+    if _collection is None:
+        _ef = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name=EMBEDDING_MODEL
+        )
+        _client = chromadb.PersistentClient(path=CHROMA_PATH)
+        _collection = _client.get_or_create_collection(
+            name=CHROMA_COLLECTION,
+            embedding_function=_ef,
+            metadata={"hnsw:space": "cosine"},
+        )
+
     return _collection
 
 
@@ -38,35 +43,60 @@ def embed_and_store(chunks):
     You don't generate embeddings manually here — you hand over the text
     and ChromaDB handles the vector math.
     """
-    _collection.add(
+    if not chunks:
+        return
+
+    collection = get_collection()
+    collection.add(
         documents=[c["text"] for c in chunks],
         metadatas=[{"game": c["game"]} for c in chunks],
         ids=[c["chunk_id"] for c in chunks],
     )
-    print(f"Stored {_collection.count()} total chunks in the vector database.")
+    print(f"Stored {collection.count()} total chunks in the vector database.")
 
 
 def retrieve(query, n_results=N_RESULTS):
     """
     Find the most relevant rule chunks for a user's question.
 
-    TODO — Milestone 2:
-
-    Use _collection.query() to run a semantic search. It takes:
+    _collection.query() runs the semantic search with:
       - query_texts : a list containing your query string
       - n_results   : how many results to return
-      - include     : what to return — use ["documents", "metadatas", "distances"]
+      - include     : documents, metadatas, and cosine distances
 
     Return a list of dicts, each with:
       - "text"     : the chunk text
       - "game"     : the game name (pull this from metadatas)
       - "distance" : the similarity score (lower = more similar for cosine)
 
-    Note: _collection.query() returns nested lists (one per query). You only
-    have one query, so you'll want index [0] to get the actual results.
+    ChromaDB returns nested lists because it accepts multiple queries. This
+    function submits one query and converts its first result group into the
+    flat list consumed by the generator.
     """
-    if _collection.count() == 0:
+    if not query or not query.strip() or n_results <= 0:
         return []
 
-    # Your implementation here.
-    return []
+    collection = get_collection()
+    collection_size = collection.count()
+    if collection_size == 0:
+        return []
+
+    results = collection.query(
+        query_texts=[query.strip()],
+        n_results=min(n_results, collection_size),
+        include=["documents", "metadatas", "distances"],
+    )
+
+    documents = (results.get("documents") or [[]])[0] or []
+    metadatas = (results.get("metadatas") or [[]])[0] or []
+    distances = (results.get("distances") or [[]])[0] or []
+
+    matches = [
+        {
+            "text": document,
+            "game": (metadata or {}).get("game", "Unknown"),
+            "distance": float(distance),
+        }
+        for document, metadata, distance in zip(documents, metadatas, distances)
+    ]
+    return sorted(matches, key=lambda match: match["distance"])
