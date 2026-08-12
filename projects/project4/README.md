@@ -43,13 +43,13 @@ Full diagrams and API contracts are in [`planning.md`](planning.md).
 ## Setup
 
 ```bash
-cd project4
+cd projects/project4
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create `project4/.env`:
+Create `projects/project4/.env`:
 
 ```text
 GROQ_API_KEY=your_key_here

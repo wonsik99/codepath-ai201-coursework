@@ -109,7 +109,7 @@ The target distribution is roughly balanced:
 
 If one label is underrepresented after collecting 200 examples, I will collect more examples from thread types where that label is common. If one label exceeds 70% of the dataset, I will not move to training until I add more examples from the other labels.
 
-The dataset is saved as `project3/data/takemeter_dataset.csv` with these columns:
+The dataset is saved as `projects/project3/data/takemeter_dataset.csv` with these columns:
 
 | Column | Meaning |
 |--------|---------|
