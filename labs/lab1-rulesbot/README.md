@@ -2,17 +2,22 @@
 
 > A board game rules assistant — because "just read the rulebook" isn't always helpful at 11pm on game night.
 
-RulesBot answers natural language questions about board game rules using a RAG (Retrieval-Augmented Generation) pipeline. Ask it anything: it retrieves relevant rule passages and generates an answer grounded in the actual text.
-
-**This is a starter repo.** The UI and infrastructure are built. The retrieval and generation pipeline is yours to implement.
+RulesBot answers natural language questions about board game rules using a RAG
+(Retrieval-Augmented Generation) pipeline. It retrieves relevant rule passages,
+filters weak matches, and asks Groq to generate an answer grounded in the actual
+text with game-name citations.
 
 ---
 
 ## Getting Started
 
-### 1. Fork and clone
+### 1. Open the lab directory
 
-Fork this repo, then clone your fork locally.
+From the consolidated coursework repository:
+
+```bash
+cd labs/lab1-rulesbot
+```
 
 ### 2. Create a virtual environment
 
@@ -44,19 +49,21 @@ Open `.env` and replace `your_key_here` with your key from [console.groq.com](ht
 python app.py
 ```
 
-RulesBot will start and open in your browser. Before you implement the retrieval pipeline, it will load and display the UI but won't be able to answer questions.
+RulesBot starts locally and prints its browser URL. The first run downloads the
+local embedding model and stores 149 rule chunks in `chroma_db/`; later runs
+reuse that index.
 
 ---
 
 ## Project Structure
 
 ```
-ai201-lab1-rulesbot-starter/
+lab1-rulesbot/
 ├── app.py              # Gradio UI and startup logic — fully built
 ├── config.py           # Settings (models, paths, retrieval params) — fully built
-├── ingest.py           # Document loading + chunking — TODO: chunk_document()
-├── retriever.py        # Vector store + semantic search — TODO: embed_and_store(), retrieve()
-├── generator.py        # LLM response generation — TODO: generate_response()
+├── ingest.py           # Document loading + overlapping character chunking
+├── retriever.py        # Lazy ChromaDB setup, ingestion, and semantic search
+├── generator.py        # Relevance filtering and grounded Groq generation
 ├── docs/               # Board game rule documents (pre-loaded)
 │   ├── catan.txt
 │   ├── clue.txt
@@ -66,17 +73,31 @@ ai201-lab1-rulesbot-starter/
 │   ├── risk.txt
 │   ├── ticket_to_ride.txt
 │   └── uno.txt
-├── specs/              # Design documents — start here before writing any code
-│   ├── system-design.md         # Complete — read this first
-│   ├── chunk-document-spec.md   # Partial — you complete before Milestone 1
-│   ├── retrieve-spec.md         # Partial — you complete before Milestone 2
-│   └── generate-response-spec.md # Partial — you complete before Milestone 3
-└── planning.md         # Your observations and reflections — fill in as you go
+├── specs/              # Completed component design documents
+├── tests/              # Ingestion, retrieval, and generation unit tests
+└── planning.md         # Recorded observations and implementation decisions
 ```
 
-## Where to Start
+## Pipeline Behavior
 
-Before opening any `.py` file, read `specs/system-design.md`. It explains what's built, what's left for you, and why the technical decisions were made. Each milestone then begins by completing the corresponding spec file before writing code — that spec becomes the brief you hand to your AI tool when you're ready to implement.
+- Rule books are split into 300-character windows with 50-character overlap.
+- ChromaDB returns the three closest chunks by cosine distance.
+- Chunks above distance `0.55` are excluded from the LLM context.
+- The system prompt restricts answers to retrieved text and requires citations
+  such as `[Catan]`.
+- Empty or weak retrieval results return a fallback without calling Groq.
+
+## Tests
+
+```bash
+python -m pytest -q
+```
+
+The automated suite does not require an API key or model download. It uses fake
+ChromaDB and Groq clients to verify result mapping, filtering, prompt grounding,
+citations, and fallback behavior. The real embedding pipeline was verified
+against all 149 chunks, and a live Groq response was verified with a temporary
+key. Running new generated answers requires `GROQ_API_KEY` in `.env`.
 
 ---
 

@@ -39,7 +39,9 @@ User query
     app.py
 ```
 
-Components 1 and 4 are fully implemented. Components 2 and 3 are partially implemented — the infrastructure is in place, but the core logic is stubbed out and left for you.
+All four components are implemented. Retrieval converts ChromaDB's nested query
+results into ranked rule chunks, and generation filters weak matches before
+building a grounded, game-cited Groq request.
 
 ---
 
@@ -72,21 +74,22 @@ Lower distance = more similar. Results from `_collection.query()` include a `dis
 | `app.py` | ✅ Complete | Gradio UI, startup orchestration, ingestion trigger |
 | `config.py` | ✅ Complete | Central configuration for models, paths, retrieval params |
 | `ingest.py` — `load_documents()` | ✅ Complete | Reads all `.txt` files from `/docs`, returns structured dicts |
-| `ingest.py` — `chunk_document()` | 🔲 Your spec + implementation | Splits a document into chunks for embedding |
-| `retriever.py` — ChromaDB init | ✅ Complete | Client, collection, and embedding function are initialized |
-| `retriever.py` — `embed_and_store()` | 🔲 Your spec + implementation | Embeds chunks and adds them to the collection |
-| `retriever.py` — `retrieve()` | 🔲 Your spec + implementation | Runs semantic search for a query, returns ranked chunks |
-| `generator.py` — Groq client init | ✅ Complete | Client is initialized and ready |
-| `generator.py` — `generate_response()` | 🔲 Your spec + implementation | Formats context and generates a grounded answer |
+| `ingest.py` — `chunk_document()` | ✅ Complete | Splits a document into overlapping chunks for embedding |
+| `retriever.py` — ChromaDB init | ✅ Complete | Lazily initializes the client, collection, and embedding function |
+| `retriever.py` — `embed_and_store()` | ✅ Complete | Embeds chunks and adds them to the collection |
+| `retriever.py` — `retrieve()` | ✅ Complete | Runs semantic search and returns ranked chunks |
+| `generator.py` — Groq client init | ✅ Complete | Lazily initializes a configured Groq client |
+| `generator.py` — `generate_response()` | ✅ Complete | Filters context and generates a grounded, cited answer |
 
 ---
 
 ## Component Specs
 
-The specs for the three functions you're implementing are in this directory:
+The specs for the three implemented functions are in this directory:
 
 - [`chunk-document-spec.md`](./chunk-document-spec.md)
 - [`retrieve-spec.md`](./retrieve-spec.md)
 - [`generate-response-spec.md`](./generate-response-spec.md)
 
-Each spec has a complete input/output contract and labeled blank fields for the design decisions your group needs to make. **Complete each spec before implementing the corresponding function.** The spec is what you hand to your AI tool — not the code file.
+Each spec records the final design decisions and implementation observations for
+its component.
