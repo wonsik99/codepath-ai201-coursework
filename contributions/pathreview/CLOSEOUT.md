@@ -9,8 +9,8 @@ exists. Nothing in this file is a record of a completed closure or deletion.
 - [x] Record the PR metadata, base/head commit IDs, and seven contribution commits.
 - [x] Apply the patch in a temporary repository and verify all three Git blob hashes.
 - [x] Check the standalone test snapshot, Python syntax, and 14 test definitions.
-- [ ] Commit and push the archive to `wonsik99/codepath-ai201-coursework`.
-- [ ] Verify that the archive, test source, patch, and metadata can be retrieved
+- [x] Commit and push the archive to `wonsik99/codepath-ai201-coursework`.
+- [x] Verify that the archive, test source, patch, and metadata can be retrieved
   from that repository on GitHub and match the local checksums.
 - [ ] After explicit approval, post the draft below and close
   [ascherj/pathreview#323](https://github.com/ascherj/pathreview/pull/323) without merging.
@@ -20,8 +20,19 @@ exists. Nothing in this file is a record of a completed closure or deletion.
   fork. Confirm its exact owner/name and that the published archive is intact.
 
 Do not delete `wonsik99/codepath-ai201-coursework` or `ascherj/pathreview`.
-The local archive is not yet a verified remote backup. Do not delete the fork
-until the publication and retrieval checks above are complete.
+The archive is now a verified remote backup. PR closure and fork deletion still
+require explicit approval and have not been performed.
+
+## Publication Verification
+
+On October 18, 2026, the archive was published to `master` in
+[commit d08ffc6](https://github.com/wonsik99/codepath-ai201-coursework/commit/d08ffc6fffcbde7c02803f3259c6128530dc9e81).
+All eight changed files were retrieved from GitHub at that exact commit and
+compared byte-for-byte with the local files. The test snapshot, patch, and PR
+metadata also passed the SHA-256 checks in `SHA256SUMS`.
+
+That publication commit retains the earlier, unchecked checklist; this follow-up
+record documents the successful publication and retrieval checks afterward.
 
 ## PR Closing Comment Draft
 

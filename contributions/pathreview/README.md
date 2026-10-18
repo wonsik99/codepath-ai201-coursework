@@ -62,9 +62,10 @@ As checked on October 18, 2026:
   ended with `failure` on September 4, 2026, with zero jobs. It does not establish
   whether the tests passed or failed.
 
-Only closeout preparation has been completed. The archive must be published and
-verified before any fork deletion. See the [closeout checklist and unsent
-comment draft](./CLOSEOUT.md).
+The archive was published to this coursework repository and verified against the
+local files on October 18, 2026. PR closure and fork deletion have not been
+performed. See the [publication record, closeout checklist, and unsent comment
+draft](./CLOSEOUT.md).
 
 ## Archived Files
 

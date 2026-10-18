@@ -46,8 +46,9 @@ PIIScrubber`).
 The coursework and Week 10 reflection are complete. As checked on October 18,
 2026, the upstream pull request is still open and has not been merged. The
 submitted test source, complete PR patch, and source metadata are preserved in
-the contribution archive. [Closeout preparation](./contributions/pathreview/CLOSEOUT.md)
-records the remaining publication and cleanup steps.
+the contribution archive, now published and verified on GitHub.
+[Closeout preparation](./contributions/pathreview/CLOSEOUT.md) records the
+publication verification and the remaining PR and fork cleanup steps.
 
 ## Running the Work
 
