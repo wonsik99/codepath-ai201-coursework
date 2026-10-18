@@ -22,8 +22,10 @@ added to the cohort ledger.
 I added a deliberately failing integration-test skeleton to demonstrate the
 missing coverage before implementing the solution.
 
-- [Reproduction commit](https://github.com/wonsik99/pathreview/commit/8ea5e37)
-- [Original solution plan](https://github.com/wonsik99/pathreview/blob/feat/75-safety-integration-tests/PLAN.md)
+- Reproduction commit: `8ea5e378f27b797acc48940db27fdf2aa2ef0e5f`
+  (recorded in the [PR metadata](./pr-323.json)).
+- [Archived original solution plan](./pr-323.patch), with a
+  [curated reading copy](./PLAN.md).
 
 There were no known blockers at this stage.
 
@@ -67,11 +69,16 @@ record is:
 
 Copilot reviewed all three changed files and identified the contradiction in the
 Week 9 verification statement. The archival wording above incorporates that
-feedback. The GitHub thread itself remains outdated and unresolved because the
-upstream PR is still open.
+feedback. At the August 12, 2026 consolidation, the GitHub review thread was
+outdated and unresolved, and the upstream PR was still open. The latest recorded
+submission status is kept in the [contribution overview](./README.md).
 
 No human reviewer approval was recorded by the time this coursework archive was
 consolidated.
+
+The submitted code, complete final-state patch, and commit metadata were later
+preserved locally on October 18, 2026 as closeout preparation. This archival step
+does not mean that the upstream PR was merged or closed.
 
 ### What Was Harder Than Expected?
 

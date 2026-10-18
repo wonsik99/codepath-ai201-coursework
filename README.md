@@ -34,17 +34,20 @@ grounded response generation, specs, and automated tests are now included.
 
 Weeks 7-10 focused on contributing to
 [PathReview](https://github.com/ascherj/pathreview), an existing AI-powered
-portfolio review application. My contribution added 14 integration tests for
+portfolio review application. I submitted 14 integration tests for
 the safety pipeline (`PromptDefense -> ContentFilter -> BiasDetector ->
 PIIScrubber`).
 
 - [Contribution archive](./contributions/pathreview)
 - [Issue #75](https://github.com/ascherj/pathreview/issues/75)
 - [Upstream PR #323](https://github.com/ascherj/pathreview/pull/323)
-- [Contribution fork](https://github.com/wonsik99/pathreview)
+- [Archived test source](./contributions/pathreview/snapshot/tests/integration/test_safety_integration.py)
 
-The coursework and Week 10 reflection are complete. The upstream pull request
-was still open when this archive was consolidated on August 12, 2026.
+The coursework and Week 10 reflection are complete. As checked on October 18,
+2026, the upstream pull request is still open and has not been merged. The
+submitted test source, complete PR patch, and source metadata are preserved in
+the contribution archive. [Closeout preparation](./contributions/pathreview/CLOSEOUT.md)
+records the remaining publication and cleanup steps.
 
 ## Running the Work
 
@@ -71,5 +74,6 @@ squashing. The pre-consolidation endpoints are also marked by these tags:
 - `archive/ai201-projects-final`
 - `archive/codepath-ai201-final`
 
-PathReview remains a separate fork while its upstream pull request is open; its
-source code is linked rather than vendored here.
+The PathReview archive preserves the submitted test file, the final three-file
+PR patch, and the original commit IDs. It is a contribution snapshot, not a full
+copy of the separate fork or its Git history.

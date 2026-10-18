@@ -1,0 +1,111 @@
+{
+  "archived_on": "2026-10-18",
+  "archive_kind": "Final PR delta and exact test-file snapshot, not a full fork or Git-history backup",
+  "pull_request": {
+    "additions": 361,
+    "author": "wonsik99",
+    "base": {
+      "ref": "main",
+      "repository": "ascherj/pathreview",
+      "sha": "d5f196df22aebcfd3d1e3ded657b34ef77e3533e"
+    },
+    "changed_files": 3,
+    "closed_at": null,
+    "created_at": "2026-07-27T20:06:51Z",
+    "deletions": 0,
+    "head": {
+      "ref": "feat/75-safety-integration-tests",
+      "repository": "wonsik99/pathreview",
+      "sha": "65b015a5dc1697c811e0a4f323a4bfb89a32fdac"
+    },
+    "html_url": "https://github.com/ascherj/pathreview/pull/323",
+    "merged": false,
+    "merged_at": null,
+    "number": 323,
+    "state": "open",
+    "title": "test: implement full safety middleware integration tests",
+    "updated_at": "2026-08-05T00:33:12Z"
+  },
+  "merge_base_sha": "d5f196df22aebcfd3d1e3ded657b34ef77e3533e",
+  "snapshot_state": {
+    "state": "OPEN",
+    "merged": false,
+    "mergeable": "MERGEABLE",
+    "review_decision": "REVIEW_REQUIRED"
+  },
+  "files": [
+    {
+      "path": "JOURNAL.md",
+      "status": "added",
+      "git_blob_sha": "46d0952d9a3a118907ed7f6fbdc0fc9e8a1dc061",
+      "additions": 88,
+      "deletions": 0
+    },
+    {
+      "path": "PLAN.md",
+      "status": "added",
+      "git_blob_sha": "1e4a9d5048f65e11c0c39daa3821510934c7d262",
+      "additions": 62,
+      "deletions": 0
+    },
+    {
+      "path": "tests/integration/test_safety_integration.py",
+      "status": "added",
+      "git_blob_sha": "7314f3f0e01abc24b4b500ec8c102a0a856c0cb1",
+      "additions": 211,
+      "deletions": 0,
+      "snapshot_path": "snapshot/tests/integration/test_safety_integration.py"
+    }
+  ],
+  "commits": [
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-22T02:38:06Z",
+      "committed_at": "2026-07-22T02:52:33Z",
+      "message": "docs: add Week 7 journal for issue selection (#75)",
+      "sha": "2d18bb216ab4df59136c6b6e37b94f973cbc4a40"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-22T03:34:33Z",
+      "committed_at": "2026-07-22T03:34:33Z",
+      "message": "test: add failing skeleton for safety middleware integration test",
+      "sha": "8ea5e378f27b797acc48940db27fdf2aa2ef0e5f"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-22T03:52:02Z",
+      "committed_at": "2026-07-22T03:52:02Z",
+      "message": "docs: update week 7 journal with issue selection reasoning",
+      "sha": "14115e4b4f9263fcb0f4e6f263b5e35a325dae69"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-22T04:09:48Z",
+      "committed_at": "2026-07-22T04:09:48Z",
+      "message": "docs: add PLAN.md and update JOURNAL.md for week 8",
+      "sha": "9c838eb7817ae5ab9e45e392b3451b35ec25c4c7"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-27T20:05:28Z",
+      "committed_at": "2026-07-27T20:05:28Z",
+      "message": "test: implement full safety middleware integration tests\n\nAdd 14 integration tests covering the complete safety middleware chain\n(PromptDefense → ContentFilter → BiasDetector → PIIScrubber) with pass\nand fail cases for each layer plus edge cases.\n\nCloses #75",
+      "sha": "9209dc5f42b17dcf322f60bf4ccc612a5961dc89"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-07-27T20:06:58Z",
+      "committed_at": "2026-07-27T20:06:58Z",
+      "message": "docs: add PR link to Week 9 JOURNAL.md check-in 2",
+      "sha": "08b0caab21d69f30a20ab484319ce302eea21481"
+    },
+    {
+      "author": "wonsik99",
+      "authored_at": "2026-08-05T00:32:50Z",
+      "committed_at": "2026-08-05T00:32:50Z",
+      "message": "docs: add Week 10 reflection to JOURNAL.md",
+      "sha": "65b015a5dc1697c811e0a4f323a4bfb89a32fdac"
+    }
+  ]
+}
